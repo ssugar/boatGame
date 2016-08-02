@@ -27,6 +27,18 @@ Board = function(){
             if(i >= 93 && i <= 95){  //make a hole for the boat to go out
                 //skip block creation
             } else if (i == 0 || i == 9 || i == 92 || i == 96) {
+                var lightPoleGeom = new THREE.BoxGeometry(5, 70, 5);
+                var lightPoleMat = new THREE.MeshPhongMaterial({ 
+                    color:0x0000000, 
+                    shininess: 500,
+                    shading:THREE.SmoothShading, 
+                });
+                lightPoleMesh = new THREE.Mesh(lightPoleGeom, lightPoleMat);
+                lightPoleMesh.position.y = 20;
+                boardPiece.mesh.add(lightPoleMesh);
+                var blockLight = new UpLight();
+                blockLight.mesh.position.y = 55;
+                boardPiece.mesh.add(blockLight.mesh);
                 this.mesh.add(boardPiece.mesh);
             } else {
                 this.mesh.add(boardPiece.mesh);

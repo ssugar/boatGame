@@ -9,7 +9,6 @@ var renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize( window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x0000ff, 0.6);
 document.body.appendChild(renderer.domElement);
-var controls = new THREE.OrbitControls(camera, render.domElement);
 
 var ocean = createOcean();
 scene.add(ocean.mesh);
@@ -23,6 +22,8 @@ scene.add(boat.mesh);
 camera.position.set( 0, 300, 800 );
 camera.up = new THREE.Vector3(0,0,-1);
 camera.lookAt(new THREE.Vector3(0,0,400));
+
+var controls = new THREE.OrbitControls(camera, render.domElement);
 
 var pointLight = new THREE.PointLight(0xffffff, 2, 0);
 pointLight.position.set(0,400,1200);

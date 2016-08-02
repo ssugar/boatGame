@@ -24,6 +24,10 @@ FrontBody = function(){
         shading:THREE.SmoothShading, 
     });
     this.mesh = new THREE.Mesh(geom, mat);
+    var boatFrontLight = new UpLight();
+    boatFrontLight.mesh.position.y = 14;
+    boatFrontLight.mesh.position.z = 20;
+    this.mesh.add(boatFrontLight.mesh);
     this.mesh.rotation.y = Math.PI/2;
 }
 
@@ -34,8 +38,11 @@ BackBody = function(){
         shading:THREE.SmoothShading, 
     });
     this.mesh = new THREE.Mesh(geom, mat);
+    var boatBackLight = new UpLight();
+    boatBackLight.mesh.position.y = 14;
+    boatBackLight.mesh.position.z = 20;
+    this.mesh.add(boatBackLight.mesh);
     this.mesh.rotation.y = Math.PI*1.5;
-
 }
 
 FlagPole = function(){
@@ -59,10 +66,6 @@ Flag = function(){
     this.mesh.position.x = 13;
     this.mesh.rotation.x = Math.PI/2;
     this.mesh.rotation.y = Math.PI/2;
-    var boatFlagLight = new THREE.PointLight(0xffffff, 1, 500);
-    boatFlagLight.position.x = 10;
-    boatFlagLight.position.y = 5;
-    this.mesh.add(boatFlagLight);
 }
 
 Boat = function(){
