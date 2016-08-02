@@ -5,6 +5,21 @@ document.body.appendChild(stats.dom);
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1500);
 
+var renderer = new THREE.WebGLRenderer({alpha:true});
+renderer.setSize( window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x0000ff, 0.6);
+var sceneCanvas = document.body.appendChild(renderer.domElement);
+sceneCanvas.setAttribute("id", "sceneCanvas");
+
+var ocean = createOcean();
+scene.add(ocean.mesh);
+
+var board = createBoard();
+scene.add(board.mesh);
+
+var boat = createBoat();
+scene.add(boat.mesh);
+
 var joystick1	= new VirtualJoystick({
     container	: document.body,
     mouseSupport	: true,
@@ -43,21 +58,6 @@ joystick2.addEventListener('touchStart', function(){
     console.log("rotation");
 })
 
-var renderer = new THREE.WebGLRenderer({alpha:true});
-renderer.setSize( window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x0000ff, 0.6);
-var sceneCanvas = document.body.appendChild(renderer.domElement);
-sceneCanvas.setAttribute("id", "sceneCanvas");
-
-var ocean = createOcean();
-scene.add(ocean.mesh);
-
-var board = createBoard();
-scene.add(board.mesh);
-
-var boat = createBoat();
-scene.add(boat.mesh);
-
 camera.position.set( 0, 300, 800 );
 camera.up = new THREE.Vector3(0,0,-1);
 camera.lookAt(new THREE.Vector3(0,0,400));
@@ -73,7 +73,8 @@ function render(){
     stats.begin();
     ocean.ripple();
     boat.float();
-    boat.moveBoat();
+    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY() );
+    boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY() );
     renderer.render(scene, camera);
     stats.end();
 }

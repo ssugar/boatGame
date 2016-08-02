@@ -108,11 +108,13 @@ Boat.prototype.float = function(){
     this.floatCounter += 0.01;
 }
 
-Boat.prototype.moveBoat = function(){
-    this.mesh.position.x += Math.sin(this.moveXCounter)*1; 
-    this.mesh.position.z += Math.sin(this.moveZCounter)*1; 
-    //this.moveXCounter += 0.01;
-    //this.moveZCounter += 0.01;
+Boat.prototype.moveBoat = function(dx, dz){
+    this.mesh.position.x += dx*0.01; 
+    this.mesh.position.z += dz*0.01; 
+}
+
+Boat.prototype.rotateBoat = function(dx, dz){
+    this.mesh.rotation.y += dz*0.0001; 
 }
 
 function createBoat(){
