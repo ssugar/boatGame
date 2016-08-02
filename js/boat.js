@@ -111,8 +111,8 @@ Boat.prototype.float = function(){
 Boat.prototype.moveBoat = function(){
     this.mesh.position.x += Math.sin(this.moveXCounter)*1; 
     this.mesh.position.z += Math.sin(this.moveZCounter)*1; 
-    this.moveXCounter += 0.01;
-    this.moveZCounter += 0.01;
+    //this.moveXCounter += 0.01;
+    //this.moveZCounter += 0.01;
 }
 
 function createBoat(){
