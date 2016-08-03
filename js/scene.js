@@ -15,7 +15,7 @@ var ocean = createOcean();
 scene.add(ocean.mesh);
 
 var board = createBoard();
-//scene.add(board.mesh);
+scene.add(board.mesh);
 
 var boat = createBoat();
 scene.add(boat.mesh);
@@ -73,7 +73,7 @@ function render(){
     ocean.ripple();
     boat.float();
     boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle() );
-    boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY() );
+    boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY(), +joystick2.angle() );
     //only move camera if boat position has changed
     if(lastBoatPositionX != boat.mesh.position.x || lastBoatPositionZ != boat.mesh.position.z){
         camera.position.set( boat.mesh.position.x, +boat.mesh.position.y + 300, +boat.mesh.position.z +500 );

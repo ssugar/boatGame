@@ -98,7 +98,7 @@ Boat = function(){
     this.mesh.add(flag.mesh);
     
     this.mesh.position.z = 320;
-    this.mesh.rotation.y = -Math.PI/4;
+    //this.mesh.rotation.y = -Math.PI/4;
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
 }
@@ -139,8 +139,10 @@ Boat.prototype.moveBoat = function(dx, dz, joystickAngle){
     }
 }
 
-Boat.prototype.rotateBoat = function(dx, dz){
-    this.mesh.rotation.y += dz*0.0001; 
+Boat.prototype.rotateBoat = function(dx, dz, joystickAngle){
+    if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
+        this.mesh.rotation.y = joystickAngle * Math.PI/180;
+    }
 }
 
 function createBoat(){
