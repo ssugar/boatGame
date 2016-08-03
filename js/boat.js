@@ -108,26 +108,34 @@ Boat.prototype.float = function(){
     this.floatCounter += 0.01;
 }
 
-Boat.prototype.moveBoat = function(dx, dz, angle){
-    if(dx != 0 || dz != 0){
-        var boatRot = this.mesh.rotation.y;
-        boatRot *= 180/Math.PI;
-        boatRot = boatRot%360;
-        if(boatRot < 0){boatRot += 360}
-        angDifference = 180 - Math.abs(Math.abs(angle - boatRot) - 180);
+Boat.prototype.getRotation = function(){
+    var boatRotation = this.mesh.rotation.y;
+    boatRotation *= 180/Math.PI;
+    boatRotation = boatRotation%360;
+    if(boatRotation < 0){boatRotation += 360}
+    return boatRotation;
+}
+
+Boat.prototype.determineSpeed = function(joystickAngle){
+        var boatRotation = this.getRotation();
+        var angDifference = 180 - Math.abs(Math.abs(joystickAngle - boatRotation) - 180);
         if(angDifference <= 5 ){
-            this.mesh.position.x += dx*0.03; 
-            this.mesh.position.z += dz*0.03; 
+            return 5;
         } else if(angDifference <= 20 ){
-            this.mesh.position.x += dx*0.01; 
-            this.mesh.position.z += dz*0.01; 
+            return 3;
         } else if(angDifference <= 50) {
-            this.mesh.position.x += dx*0.005; 
-            this.mesh.position.z += dz*0.005; 
+            return 1;
         } else {
-            this.mesh.position.x += dx*0.001; 
-            this.mesh.position.z += dz*0.001; 
+            return 0.5;
         }
+}
+
+
+Boat.prototype.moveBoat = function(dx, dz, joystickAngle){
+    if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
+        var speedMultiplier = this.determineSpeed(joystickAngle);
+        this.mesh.position.x += dx*0.005*speedMultiplier; 
+        this.mesh.position.z += dz*0.005*speedMultiplier; 
     }
 }
 
