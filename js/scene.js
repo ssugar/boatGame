@@ -72,7 +72,7 @@ function render(){
     stats.begin();
     ocean.ripple();
     boat.float();
-    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle() );
+    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle(), board.mesh );
     boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY(), +joystick2.angle() );
     //only move camera if boat position has changed
     if(lastBoatPositionX != boat.mesh.position.x || lastBoatPositionZ != boat.mesh.position.z){

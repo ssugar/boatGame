@@ -127,11 +127,19 @@ Boat.prototype.determineSpeed = function(joystickAngle){
         }
 }
 
-Boat.prototype.moveBoat = function(dx, dz, joystickAngle){
+Boat.prototype.detectCollision = function(boardMesh){
+    //console.log(boardMesh.position.x);
+    return false;
+}
+
+Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardMesh){
     if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
-        var speedMultiplier = this.determineSpeed(joystickAngle);
-        this.mesh.position.x += dx*0.005*speedMultiplier; 
-        this.mesh.position.z += dz*0.005*speedMultiplier; 
+        var collision = this.detectCollision(boardMesh);
+        if(collision == false){
+            var speedMultiplier = this.determineSpeed(joystickAngle);
+            this.mesh.position.x += dx*0.005*speedMultiplier; 
+            this.mesh.position.z += dz*0.005*speedMultiplier; 
+        }
     }
 }
 
