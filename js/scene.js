@@ -15,7 +15,7 @@ var ocean = createOcean();
 scene.add(ocean.mesh);
 
 var board = createBoard();
-scene.add(board.mesh);
+//scene.add(board.mesh);
 
 var boat = createBoat();
 scene.add(boat.mesh);
@@ -62,19 +62,25 @@ camera.position.set( 0, 300, 800 );
 camera.up = new THREE.Vector3(0,0,-1);
 camera.lookAt(new THREE.Vector3(0,0,400));
 
-//var controls = new THREE.OrbitControls(camera, render.domElement);
-
-var pointLight = new THREE.PointLight(0xffffff, 2, 0);
-pointLight.position.set(0,400,1200);
-//scene.add(pointLight);
+var lastBoatPositionX = boat.mesh.position.x;
+var lastBoatPositionZ = boat.mesh.position.z;
+camera.position.set( boat.mesh.position.x, +boat.mesh.position.y + 300, +boat.mesh.position.z +500 );
+camera.lookAt(boat.mesh.position);
 
 function render(){
     requestAnimationFrame(render);
     stats.begin();
     ocean.ripple();
     boat.float();
-    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY() );
+    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle() );
     boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY() );
+    //only move camera if boat position has changed
+    if(lastBoatPositionX != boat.mesh.position.x || lastBoatPositionZ != boat.mesh.position.z){
+        camera.position.set( boat.mesh.position.x, +boat.mesh.position.y + 300, +boat.mesh.position.z +500 );
+        camera.lookAt(boat.mesh.position);
+        lastBoatPositionX = boat.mesh.position.x;
+        lastBoatPositionZ = boat.mesh.position.z;
+    }
     renderer.render(scene, camera);
     stats.end();
 }

@@ -108,9 +108,27 @@ Boat.prototype.float = function(){
     this.floatCounter += 0.01;
 }
 
-Boat.prototype.moveBoat = function(dx, dz){
-    this.mesh.position.x += dx*0.01; 
-    this.mesh.position.z += dz*0.01; 
+Boat.prototype.moveBoat = function(dx, dz, angle){
+    if(dx != 0 || dz != 0){
+        var boatRot = this.mesh.rotation.y;
+        boatRot *= 180/Math.PI;
+        boatRot = boatRot%360;
+        if(boatRot < 0){boatRot += 360}
+        angDifference = 180 - Math.abs(Math.abs(angle - boatRot) - 180);
+        if(angDifference <= 5 ){
+            this.mesh.position.x += dx*0.03; 
+            this.mesh.position.z += dz*0.03; 
+        } else if(angDifference <= 20 ){
+            this.mesh.position.x += dx*0.01; 
+            this.mesh.position.z += dz*0.01; 
+        } else if(angDifference <= 50) {
+            this.mesh.position.x += dx*0.005; 
+            this.mesh.position.z += dz*0.005; 
+        } else {
+            this.mesh.position.x += dx*0.001; 
+            this.mesh.position.z += dz*0.001; 
+        }
+    }
 }
 
 Boat.prototype.rotateBoat = function(dx, dz){
