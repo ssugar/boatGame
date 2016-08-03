@@ -24,8 +24,8 @@ var joystick1	= new VirtualJoystick({
     container	: document.body,
     mouseSupport	: true,
     stationaryBase	: true,
-    baseX		: 150,
-    baseY		: 150,
+    baseX		: 200,
+    baseY		: 200,
     strokeStyle	: 'cyan',
     limitStickTravel: true,
     stickRadius	: 120		
@@ -43,8 +43,8 @@ var joystick2	= new VirtualJoystick({
     container	: document.body,
     mouseSupport	: true,
     stationaryBase	: true,
-    baseX		: window.innerWidth - 150,
-    baseY		: 150,
+    baseX		: window.innerWidth - 200,
+    baseY		: 200,
     strokeStyle	: 'orange',
     limitStickTravel: true,
     stickRadius	: 120		

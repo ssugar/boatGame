@@ -71,8 +71,6 @@ Flag = function(){
 Boat = function(){
     this.mesh = new THREE.Object3D();
     this.floatCounter = 0;
-    this.moveXCounter = 0;
-    this.moveZCounter = 0;
 
     var mainBody = new MainBody();
     this.mesh.add(mainBody.mesh);
@@ -98,7 +96,6 @@ Boat = function(){
     this.mesh.add(flag.mesh);
     
     this.mesh.position.z = 320;
-    //this.mesh.rotation.y = -Math.PI/4;
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
 }
@@ -129,7 +126,6 @@ Boat.prototype.determineSpeed = function(joystickAngle){
             return 0.5;
         }
 }
-
 
 Boat.prototype.moveBoat = function(dx, dz, joystickAngle){
     if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
