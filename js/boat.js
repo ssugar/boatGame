@@ -131,47 +131,47 @@ Boat.prototype.determineSpeed = function(joystickAngle){
         }
 }
 
-Boat.prototype.detectCollision = function(dx, dz, boardPieces){
+Boat.prototype.moveBoundingBoxNextPos = function(dx, dz){
     this.boundingBox.position.x += dx;
     this.boundingBox.position.z += dz;
     this.boundingBox.update();
+}
+
+Boat.prototype.moveBoundingBoxLastPos = function(dx, dz){
+    this.boundingBox.position.x -= dx;
+    this.boundingBox.position.z -= dz;
+    this.boundingBox.update();
+}
+
+Boat.prototype.detectCollision = function(boardPieces){
     for(i=0;i<boardPieces.length;i++){
         boardPieces[i].update();
         collision = this.boundingBox.box.intersectsBox(boardPieces[i].box);
         if(collision){
-            this.boundingBox.position.x -= dx;
-            this.boundingBox.position.z -= dz;
-            this.boundingBox.update();
             return true;
         }
     }
     return false;
 }
 
-Boat.prototype.confirmOnOcean = function(dx, dz, oceanBoundingBox) {
-    this.boundingBox.position.x += dx;
-    this.boundingBox.position.z += dz;
-    this.boundingBox.update();
+Boat.prototype.confirmOnOcean = function(oceanBoundingBox) {
     oceanBoundingBox.update();
     onOcean = this.boundingBox.box.intersectsBox(oceanBoundingBox.box);
-    if(!onOcean){
-        this.boundingBox.position.x -= dx;
-        this.boundingBox.position.z -= dz;
-        this.boundingBox.update();
-        console.log('mr boat left the ocean');
-        return false;
-    }
-    return true;
+    if(!onOcean) { return false; } else { return true; }
 }
 
 Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardPieces, oceanBoundingBox){
     if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
         var speedMultiplier = this.determineSpeed(joystickAngle);
-        var collision = this.detectCollision(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier, boardPieces);
-        var onOcean = this.confirmOnOcean(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier, oceanBoundingBox);
+        this.moveBoundingBoxNextPos(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier);
+        var collision = this.detectCollision(boardPieces);
+        var onOcean = this.confirmOnOcean(oceanBoundingBox);
         if(collision == false && onOcean == true) {
             this.mesh.position.x += dx*0.005*speedMultiplier; 
             this.mesh.position.z += dz*0.005*speedMultiplier; 
+            this.boundingBox.update();
+        } else {
+            this.moveBoundingBoxLastPos(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier);
             this.boundingBox.update();
         }
     }

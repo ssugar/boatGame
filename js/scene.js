@@ -15,7 +15,7 @@ sceneCanvas.setAttribute("id", "sceneCanvas");
 
 var ocean = createOcean();
 scene.add(ocean.mesh);
-//scene.add(ocean.boundingBox);
+scene.add(ocean.boundingBox);
 
 var board = createBoard();
 scene.add(board.mesh);
