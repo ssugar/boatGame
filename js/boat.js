@@ -141,8 +141,9 @@ Boat.prototype.moveBoundingBoxNextPos = function(dx, dz){
 Boat.prototype.detectCollision = function(boardPieces){
     for(i=0;i<boardPieces.length;i++){
         boardPieces[i].update();
-        collision = this.boundingBox.box.intersectsBox(boardPieces[i].box);
-        if(collision){
+        var currentPos = new THREE.Vector3(this.boundingBox.position.x, 0, this.boundingBox.position.z);
+        collision = boardPieces[i].box.distanceToPoint(currentPos);
+        if(collision < 60){
             return true;
         }
     }
