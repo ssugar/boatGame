@@ -131,7 +131,7 @@ Boat.prototype.determineSpeed = function(joystickAngle){
         }
 }
 
-Boat.prototype.detectCollision = function(dx, dz, boardMesh, boardPieces){
+Boat.prototype.detectCollision = function(dx, dz, boardPieces){
     this.boundingBox.position.x += dx;
     this.boundingBox.position.z += dz;
     this.boundingBox.update();
@@ -148,11 +148,28 @@ Boat.prototype.detectCollision = function(dx, dz, boardMesh, boardPieces){
     return false;
 }
 
-Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardMesh, boardPieces){
+Boat.prototype.confirmOnOcean = function(dx, dz, oceanBoundingBox) {
+    this.boundingBox.position.x += dx;
+    this.boundingBox.position.z += dz;
+    this.boundingBox.update();
+    oceanBoundingBox.update();
+    onOcean = this.boundingBox.box.intersectsBox(oceanBoundingBox.box);
+    if(!onOcean){
+        this.boundingBox.position.x -= dx;
+        this.boundingBox.position.z -= dz;
+        this.boundingBox.update();
+        console.log('mr boat left the ocean');
+        return false;
+    }
+    return true;
+}
+
+Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardPieces, oceanBoundingBox){
     if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
         var speedMultiplier = this.determineSpeed(joystickAngle);
-        var collision = this.detectCollision(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier, boardMesh, boardPieces);
-        if(collision == false){
+        var collision = this.detectCollision(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier, boardPieces);
+        var onOcean = this.confirmOnOcean(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier, oceanBoundingBox);
+        if(collision == false && onOcean == true) {
             this.mesh.position.x += dx*0.005*speedMultiplier; 
             this.mesh.position.z += dz*0.005*speedMultiplier; 
             this.boundingBox.update();

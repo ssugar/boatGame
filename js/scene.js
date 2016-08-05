@@ -3,7 +3,9 @@ stats.showPanel( 0 );
 document.body.appendChild(stats.dom);
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1500);
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+//scene.fog = new THREE.Fog(0xffffff, 700, 1000);
 
 var renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize( window.innerWidth, window.innerHeight);
@@ -13,13 +15,13 @@ sceneCanvas.setAttribute("id", "sceneCanvas");
 
 var ocean = createOcean();
 scene.add(ocean.mesh);
+//scene.add(ocean.boundingBox);
 
 var board = createBoard();
 scene.add(board.mesh);
-for(i=0;i<board.boundingBoxes.length;i++){
+//for(i=0;i<board.boundingBoxes.length;i++){
     //scene.add(board.boundingBoxes[i]);
-}
-
+//}
 
 var boat = createBoat();
 scene.add(boat.mesh);
@@ -77,7 +79,7 @@ function render(){
     stats.begin();
     ocean.ripple();
     boat.float();
-    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle(), board.mesh, board.boundingBoxes );
+    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle(), board.boundingBoxes, ocean.boundingBox );
     boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY(), +joystick2.angle() );
     //only move camera if boat position has changed
     if(lastBoatPositionX != boat.mesh.position.x || lastBoatPositionZ != boat.mesh.position.z){

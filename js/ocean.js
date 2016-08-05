@@ -19,9 +19,11 @@ Ocean = function(){
         shading:THREE.FlatShading, 
     });
     this.mesh = new THREE.Mesh(geom, mat);
+    this.boundingBox = new THREE.BoundingBoxHelper(this.mesh); 
     this.mesh.rotation.x = -Math.PI/2;
     this.mesh.rotation.z = Math.PI/4;
     this.mesh.receiveShadow = true;
+    this.boundingBox.update();
 }
 
 Ocean.prototype.ripple = function(){
