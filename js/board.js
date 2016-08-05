@@ -18,6 +18,8 @@ Board = function(){
     var numBoardPieces = 100;
     this.boardWidth = 10;
     this.boardHeight = 10;
+    this.pieces = [];
+    this.boundingBoxes = [];
     for(var i=0;i<numBoardPieces; i++){
         var boardPiece = new BoardPiece();
         boardPiece.mesh.position.x = i%this.boardWidth*50;
@@ -39,8 +41,16 @@ Board = function(){
                 var blockLight = new UpLight();
                 blockLight.mesh.position.y = 55;
                 boardPiece.mesh.add(blockLight.mesh);*/
+                this.pieces.push(boardPiece.mesh);
+                var boundingBox = new THREE.BoundingBoxHelper(boardPiece.mesh);
+                boundingBox.update();
+                this.boundingBoxes.push(boundingBox);
                 this.mesh.add(boardPiece.mesh);
             } else {
+                var boundingBox = new THREE.BoundingBoxHelper(boardPiece.mesh);
+                boundingBox.update();
+                this.boundingBoxes.push(boundingBox);
+                this.pieces.push(boardPiece.mesh);
                 this.mesh.add(boardPiece.mesh);
             }
 

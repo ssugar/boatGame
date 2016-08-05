@@ -16,9 +16,14 @@ scene.add(ocean.mesh);
 
 var board = createBoard();
 scene.add(board.mesh);
+for(i=0;i<board.boundingBoxes.length;i++){
+    //scene.add(board.boundingBoxes[i]);
+}
+
 
 var boat = createBoat();
 scene.add(boat.mesh);
+scene.add(boat.boundingBox);
 
 var joystick1	= new VirtualJoystick({
     container	: document.body,
@@ -72,7 +77,7 @@ function render(){
     stats.begin();
     ocean.ripple();
     boat.float();
-    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle(), board.mesh );
+    boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle(), board.mesh, board.boundingBoxes );
     boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY(), +joystick2.angle() );
     //only move camera if boat position has changed
     if(lastBoatPositionX != boat.mesh.position.x || lastBoatPositionZ != boat.mesh.position.z){

@@ -94,8 +94,12 @@ Boat = function(){
     var flag = new Flag();
     flag.mesh.position.y = 70;
     this.mesh.add(flag.mesh);
-    
+
     this.mesh.position.z = 320;
+
+    this.boundingBox = new THREE.BoundingBoxHelper(this.mesh);
+    this.boundingBox.update();
+
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
 }
@@ -127,25 +131,47 @@ Boat.prototype.determineSpeed = function(joystickAngle){
         }
 }
 
-Boat.prototype.detectCollision = function(boardMesh){
-    //console.log(boardMesh.position.x);
+Boat.prototype.detectCollision = function(dx, dz, boardMesh, boardPieces){
+    this.boundingBox.position.x += dx;
+    this.boundingBox.position.z += dz;
+    this.boundingBox.update();
+    for(i=0;i<boardPieces.length;i++){
+        boardPieces[i].update();
+        collision = this.boundingBox.box.intersectsBox(boardPieces[i].box);
+        if(collision){
+            console.log("collision!");
+            console.log(this.boundingBox.position);
+            console.log(boardPieces[i].position);
+            console.log(dx);
+            console.log(dz);
+            //Next steps: Determine dx dy of boat and object, find angle of that, and angle of the direction user is trying to go.  if user is moving away from collision object, then collision = false. 
+            
+            this.boundingBox.position.x -= dx;
+            this.boundingBox.position.z -= dz;
+            return true;
+            //return false;
+        }
+    }
     return false;
 }
 
-Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardMesh){
+Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardMesh, boardPieces){
     if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
-        var collision = this.detectCollision(boardMesh);
+        var speedMultiplier = this.determineSpeed(joystickAngle);
+        var collision = this.detectCollision(dx*0.005*speedMultiplier, dz*0.005*speedMultiplier, boardMesh, boardPieces);
         if(collision == false){
-            var speedMultiplier = this.determineSpeed(joystickAngle);
             this.mesh.position.x += dx*0.005*speedMultiplier; 
             this.mesh.position.z += dz*0.005*speedMultiplier; 
+            this.boundingBox.update();
         }
     }
 }
 
 Boat.prototype.rotateBoat = function(dx, dz, joystickAngle){
     if(dx != 0 || dz != 0){  //only work if there is joystick movement detected
-        this.mesh.rotation.y = joystickAngle * Math.PI/180;
+        var joystickRadians = joystickAngle * Math.PI/180;
+        this.mesh.rotation.y = joystickRadians;
+        this.boundingBox.update();
     }
 }
 
