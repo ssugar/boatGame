@@ -23,7 +23,7 @@ for(i=0;i<board.boundingBoxes.length;i++){
 
 var boat = createBoat();
 scene.add(boat.mesh);
-scene.add(boat.boundingBox);
+//scene.add(boat.boundingBox);
 
 var joystick1	= new VirtualJoystick({
     container	: document.body,
@@ -41,7 +41,7 @@ joystick1.addEventListener('touchStartValidation', function(event){
     return true
 });
 joystick1.addEventListener('touchStart', function(){
-    console.log("movement");
+    //console.log("movement");
 })
 
 var joystick2	= new VirtualJoystick({
@@ -60,7 +60,7 @@ joystick2.addEventListener('touchStartValidation', function(event){
     return true
 });
 joystick2.addEventListener('touchStart', function(){
-    console.log("rotation");
+    //console.log("rotation");
 })
 
 camera.position.set( 0, 300, 800 );

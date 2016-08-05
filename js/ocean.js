@@ -1,5 +1,5 @@
 Ocean = function(){
-    var geom = new THREE.PlaneGeometry(1600, 1600, 100, 100);
+    var geom = new THREE.PlaneGeometry(3200, 3200, 200, 200);
     var l = geom.vertices.length;
     this.waves = [];
     for(var i=0;i<l; i++){

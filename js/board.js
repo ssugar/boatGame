@@ -26,9 +26,9 @@ Board = function(){
         boardPiece.mesh.position.z = Math.floor(i/this.boardWidth)*50;
         //only add the outside boxes to the board
         if(i < this.boardWidth || i > numBoardPieces - this.boardWidth || i%this.boardWidth == 0 || i%this.boardWidth == 9){
-            if(i >= 93 && i <= 95){  //make a hole for the boat to go out
+            if(i >= 92 && i <= 96){  //make a hole for the boat to go out
                 //skip block creation
-            } else if (i == 0 || i == 9 || i == 92 || i == 96) {
+            } else if (i == 0 || i == 9 || i == 91 || i == 97) {
                 var lightPoleGeom = new THREE.BoxGeometry(5, 70, 5);
                 var lightPoleMat = new THREE.MeshPhongMaterial({ 
                     color:0x0000000, 

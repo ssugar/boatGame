@@ -121,9 +121,9 @@ Boat.prototype.determineSpeed = function(joystickAngle){
         var boatRotation = this.getRotation();
         var angDifference = 180 - Math.abs(Math.abs(joystickAngle - boatRotation) - 180);
         if(angDifference <= 5 ){
-            return 5;
+            return 16;
         } else if(angDifference <= 20 ){
-            return 3;
+            return 6;
         } else if(angDifference <= 50) {
             return 1;
         } else {
@@ -139,17 +139,10 @@ Boat.prototype.detectCollision = function(dx, dz, boardMesh, boardPieces){
         boardPieces[i].update();
         collision = this.boundingBox.box.intersectsBox(boardPieces[i].box);
         if(collision){
-            console.log("collision!");
-            console.log(this.boundingBox.position);
-            console.log(boardPieces[i].position);
-            console.log(dx);
-            console.log(dz);
-            //Next steps: Determine dx dy of boat and object, find angle of that, and angle of the direction user is trying to go.  if user is moving away from collision object, then collision = false. 
-            
             this.boundingBox.position.x -= dx;
             this.boundingBox.position.z -= dz;
+            this.boundingBox.update();
             return true;
-            //return false;
         }
     }
     return false;
