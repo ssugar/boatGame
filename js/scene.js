@@ -3,13 +3,11 @@ stats.showPanel( 0 );
 document.body.appendChild(stats.dom);
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-//scene.fog = new THREE.Fog(0xffffff, 700, 1000);
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
 
 var renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize( window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x0000ff, 0.6);
+renderer.setClearColor(0x000000);
 var sceneCanvas = document.body.appendChild(renderer.domElement);
 sceneCanvas.setAttribute("id", "sceneCanvas");
 
@@ -17,15 +15,24 @@ var ocean = createOcean();
 scene.add(ocean.mesh);
 //scene.add(ocean.boundingBox);
 
+var skywall = createSkywall();
+scene.add(skywall.mesh);
+
 var board = createBoard();
 scene.add(board.mesh);
 //for(i=0;i<board.boundingBoxes.length;i++){
     //scene.add(board.boundingBoxes[i]);
 //}
 
-var boat = createBoat();
+var boat = createYacht();
 scene.add(boat.mesh);
 //scene.add(boat.boundingBox);
+
+//var yacht = createYacht();
+//boat2.mesh.position.z += 70;
+//boat2.mesh.scale.set(0.5, 0.5, 0.5);
+//scene.add(yacht.mesh);
+//scene.add(yacht.boundingBox);
 
 var joystick1	= new VirtualJoystick({
     container	: document.body,
@@ -79,9 +86,10 @@ function render(){
     stats.begin();
     ocean.ripple();
     boat.float();
+    //yacht.float();
     boat.moveBoat( +joystick1.deltaX(), +joystick1.deltaY(), +joystick1.angle(), board.boundingBoxes, ocean.boundingBox );
     boat.rotateBoat( +joystick2.deltaX(), +joystick2.deltaY(), +joystick2.angle() );
-    //only move camera if boat position has changed
+    //only move camera and skywall if boat position has changed
     if(lastBoatPositionX != boat.mesh.position.x || lastBoatPositionZ != boat.mesh.position.z){
         camera.position.set( boat.mesh.position.x, +boat.mesh.position.y + 300, +boat.mesh.position.z +500 );
         camera.lookAt(boat.mesh.position);

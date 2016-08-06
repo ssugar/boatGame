@@ -132,10 +132,8 @@ Boat.prototype.determineSpeed = function(joystickAngle){
 }
 
 Boat.prototype.moveBoundingBoxNextPos = function(dx, dz){
-    var nextX = this.boundingBox.position.x + dx;
-    var nextZ = this.boundingBox.position.z + dz;
-    this.boundingBox.position.set(nextX, 0, nextZ);
-    console.log("boat X " + this.mesh.position.x + " boat Z " + this.mesh.position.z + " BB X " + this.boundingBox.position.x + " BB Y " + this.boundingBox.position.z);
+    this.boundingBox.position.x += dx;
+    this.boundingBox.position.z += dz;
 }
 
 Boat.prototype.detectCollision = function(boardPieces){
@@ -143,9 +141,7 @@ Boat.prototype.detectCollision = function(boardPieces){
         boardPieces[i].update();
         var currentPos = new THREE.Vector3(this.boundingBox.position.x, 0, this.boundingBox.position.z);
         collision = boardPieces[i].box.distanceToPoint(currentPos);
-        if(collision < 60){
-            return true;
-        }
+        if(collision < 60){ return true; }
     }
     return false;
 }
@@ -154,7 +150,6 @@ Boat.prototype.confirmOnOcean = function(oceanBoundingBox) {
     oceanBoundingBox.update();
     var currentPos = new THREE.Vector3(this.boundingBox.position.x, 0, this.boundingBox.position.z);
     oceanContains = oceanBoundingBox.box.distanceToPoint(currentPos);
-    //console.log(oceanContains);
     if(oceanContains == 0) { return true; } else { return false; }
 }
 
@@ -170,19 +165,8 @@ Boat.prototype.moveBoat = function(dx, dz, joystickAngle, boardPieces, oceanBoun
             this.mesh.position.z += dz*0.005*speedMultiplier; 
             this.boundingBox.update();
         } else {
-            //this.mesh.position.x -= dx*0.005*speedMultiplier; 
-            //this.mesh.position.z -= dz*0.005*speedMultiplier; 
             this.boundingBox.update();
         }
-        if(!onOcean){
-            this.moveBoundingBoxNextPos(dx*0.1*speedMultiplier, dz*0.1*speedMultiplier);
-            onOcean = this.confirmOnOcean(oceanBoundingBox);
-            if(onOcean){
-                this.mesh.position.x += dx*0.1*speedMultiplier; 
-                this.mesh.position.z += dz*0.1*speedMultiplier; 
-                this.boundingBox.update();
-            }
-         }
     }
 }
 
